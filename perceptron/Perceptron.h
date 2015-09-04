@@ -7,20 +7,23 @@
 
 #include <vector>
 #include <math.h>
+#include <map>
 
 enum act_func {SIGMOID, THRESGOLD};
 
 
 class Perceptron {
 private:
-    int id;
     std::vector <double> weight;
-    std::vector <double> signal;
+    std::vector <double> signal_set;
     double output_signal;
     unsigned int type_act_func;
 
 public:
-    Perceptron (int);
+    Perceptron ();
+    void learn (std::map < std::vector, bool > );
+    void signal (std::vector);
+    bool answer();
     double activation_function(double, unsigned int);
 };
 

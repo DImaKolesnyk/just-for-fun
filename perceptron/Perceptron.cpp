@@ -4,7 +4,7 @@
 
 #include "Perceptron.h"
 
-Perceptron::Perceptron(int) {
+Perceptron::Perceptron() {
 
 }
 
