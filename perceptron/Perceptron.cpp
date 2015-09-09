@@ -4,25 +4,30 @@
 
 #include "Perceptron.h"
 
-Perceptron::Perceptron() {
+Perceptron::Perceptron(const std::vector<double> &w, double t) : weight(w), threshold(t) {
 
 }
 
-double Perceptron::activation_function(double weighted_sum, unsigned int type) {
+Perceptron::~Perceptron() {
 
-    double func_answer = 0;
+}
 
-    if ( type == 0 )
-    {
-        func_answer = 1 / ( 1 + exp(-weighted_sum));
-    } else if ( type == 1 ) {
+bool Perceptron::classification(const std::vector< double > &x) {
 
-        if ( weighted_sum >= 0 ) {
-            func_answer = 1;
-        } else {
-            func_answer = 0;
-        }
+    bool a;
+    double weightSum = -threshold;
+
+    for (int i = 0; i < x.size(); ++i) {
+
+        weightSum += weight[i]*x[i];
     }
 
-    return func_answer;
+    if (weightSum >= 0 ) {
+        a = 1;
+    } else {
+        a = 0;
+    }
+
+    return a;
 }
+

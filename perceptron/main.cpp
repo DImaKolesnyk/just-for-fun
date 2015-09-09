@@ -1,23 +1,35 @@
-#include <iostream>
-#include "Perceptron.h"
+#include "LearnPerceptron.h"
+#include <fstream>
+
 
 int main() {
 
-    std::vector <bool> signal_set;
-    signal_set.push_back(0);
-    signal_set.push_back(0);
+    std::ifstream F("/run/media/dima/732F6FE51C3B609E/project/cpp/just-for-fun/perceptron/data04.csv");
+    double a;
+    std::vector <double > buff;
+    int i = 0;
+    std::vector < std::vector <double> > data;
 
-    std::map < std::vector, bool> learn_set;
-    learn_set[ (std::vector){1, 1} ] = 1;
-    learn_set[ {1, 0} ] = 0;
-    learn_set[ {0, 1} ] = 0;
-    learn_set[ {0, 0} ] = 0;
+   while (!F.eof())
+    {
+        F>>a;
+        buff.push_back(a);
+        i+=1;
 
-    Perceptron a;
-    a.learn(learn_set);
-    a.signal(signal_set);
+        if ( i%3 == 0 ) {
+            data.push_back(buff);
+            buff.clear();
+        }
+    }
 
-    std::cout << a.answer << std::endl;
+    LearnPerceptron lp;
+    Perceptron smartp = lp.learn( data );
+
+    for (int j = 80; j < 100; ++j) {
+        std::cout << "Real answer: " << data[j][2] << ' ' << "My perceptron answer: " << smartp.classification(data[j]);
+        if ( data[j][2] != smartp.classification(data[j])) { std::cout << " Fail!" << std::endl; } else { std::cout << std::endl; }
+    }
+
 
     return 0;
 }
