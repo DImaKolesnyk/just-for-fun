@@ -17,6 +17,8 @@ private:
 public:
     Perceptron (const std::vector < double > &w, double threshold);
     bool classification( const std::vector <double > &x );
+    void setWeight(const std::vector <double> &w, double t );
+    std::vector <double> getWeightAndThreshold();
     ~Perceptron();
 
 };

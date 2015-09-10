@@ -24,12 +24,19 @@ int main() {
 
     LearnPerceptron lp;
     Perceptron smartp = lp.learn( data );
+    unsigned int fail = 0;
 
     for (int j = 80; j < 100; ++j) {
         std::cout << "Real answer: " << data[j][2] << ' ' << "My perceptron answer: " << smartp.classification(data[j]);
-        if ( data[j][2] != smartp.classification(data[j])) { std::cout << " Fail!" << std::endl; } else { std::cout << std::endl; }
+        if ( data[j][2] != smartp.classification(data[j])) { fail+=1; std::cout << " Fail!" << std::endl; } else { std::cout << std::endl; }
     }
 
+    std::cout << "Number of perceptron falis: " << fail << std::endl;
+
+    if ( fail == 0 ) {
+
+        std::cout << "The best weight: " << smartp.getWeightAndThreshold()[0] << ", " << smartp.getWeightAndThreshold()[1] << ";" << std::endl;
+    }
 
     return 0;
 }
