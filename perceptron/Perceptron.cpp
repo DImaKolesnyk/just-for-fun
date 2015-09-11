@@ -22,6 +22,7 @@ std::vector <double> Perceptron::getWeightAndThreshold() {
 
     std::vector <double> a = weight;
     a.push_back(threshold);
+
     return a;
 
 }

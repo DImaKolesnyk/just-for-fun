@@ -34,16 +34,13 @@ Perceptron LearnPerceptron::learn(std::vector<std::vector<double> > &train) {
                 //-----
                 weight[0] = weight[0] + 0.5*(train[i][2] -  myAnswer)*train[i][0];
                 weight[1] = weight[1] + 0.5*(train[i][2] -  myAnswer)*train[i][1];
-                //std::cout << "New weight vector: " << weight[0] << "," << weight[1] << "; " << std::endl;
+//                std::cout << "New weight vector: " << weight[0] << "," << weight[1] << "; " << std::endl;
                 threshold = threshold + 0.18*(train[i][2] -  myAnswer);
                 perceptron.setWeight(weight, threshold);
 
             }
         }
     }
-
-
-
 
     return perceptron;
 

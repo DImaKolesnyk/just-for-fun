@@ -1,8 +1,13 @@
 #include "LearnPerceptron.h"
 #include <fstream>
+#include <QApplication>
+#include "Visualizer.h"
 
 
-int main() {
+
+int main(int argc, char** argv) {
+
+    QApplication app(argc, argv);
 
     std::ifstream F("/run/media/dima/732F6FE51C3B609E/project/cpp/just-for-fun/perceptron/data04.csv");
     double a;
@@ -35,8 +40,13 @@ int main() {
 
     if ( fail == 0 ) {
 
-        std::cout << "The best weight: " << smartp.getWeightAndThreshold()[0] << ", " << smartp.getWeightAndThreshold()[1] << ";" << std::endl;
+        std::vector <double> bestw = smartp.getWeightAndThreshold();
+        std::cout << "The best weight: " << bestw[0] << ", " << bestw[1] << ";" << std::endl << "Threshold: " << bestw[2] << std::endl;
     }
 
-    return 0;
+
+    Visualizer visualizer(data, smartp.getWeightAndThreshold());
+    visualizer.show();
+
+    return app.exec();
 }
