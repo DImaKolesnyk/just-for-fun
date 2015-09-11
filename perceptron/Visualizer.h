@@ -17,6 +17,7 @@ public:
     Visualizer(const std::vector< std::vector< double> > &data, const std::vector <double> &line);
     void drawCoordinate( QPaintEvent *paint_event);
     void drawDots( QPaintEvent *p);
+    void drawLine( QPaintEvent *p);
     ~Visualizer();
 
 protected:

@@ -23,7 +23,7 @@ Perceptron LearnPerceptron::learn(std::vector<std::vector<double> > &train) {
 
     bool myAnswer;
 
-    for (int j = 0; j < 10; ++j) {
+    for (int j = 0; j < 5; ++j) {
         for (int i = 0; i < 80; ++i) {
             myAnswer = perceptron.classification(train[i]);
             if ( myAnswer != train[i][2]){

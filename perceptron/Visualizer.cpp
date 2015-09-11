@@ -53,14 +53,33 @@ void Visualizer::drawCoordinate(QPaintEvent *paint_event) {
 void Visualizer::drawDots(QPaintEvent *p) {
 
     QPainter painter(this);
-    QPen redPen(Qt::red, 2);
     QPen bluePen( Qt::blue, 2 );
+    QPen greenPen( Qt::darkGreen, 2);
 
-    painter.setPen(bluePen);
 
     for (int k = 0; k < data.size(); ++k) {
-        painter.drawEllipse(QPoint(500*data[k][0], 500*data[k][1]), 1, 1);
+
+        if (data[k][2] == 0 ) {
+            painter.setPen(bluePen);
+        } else {
+            painter.setPen(greenPen);
+        }
+        painter.drawEllipse(QPoint(500*data[k][0], 500*data[k][1]), 2, 2);
     }
+
+
+
+}
+
+void Visualizer::drawLine(QPaintEvent *p) {
+
+    QPainter painter(this);
+    QPen redPen(Qt::red, 2);
+    painter.setPen(redPen);
+    unsigned int scale = 500;
+    double line1X = line[2]/line[0];
+    double line2X = (line[2] - line[1]) / line[0];
+    painter.drawLine(QPoint(scale*line1X, scale*0 ), QPoint(scale*line2X, scale*1) );
 
 }
 
@@ -69,4 +88,5 @@ void Visualizer::paintEvent(QPaintEvent *paint_event) {
 
     drawCoordinate(paint_event);
     drawDots(paint_event);
+    drawLine(paint_event);
 }
