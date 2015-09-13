@@ -10,6 +10,8 @@
 
 Visualizer::Visualizer(const std::vector<std::vector<double> > &data_, const std::vector<double> &line_): data(data_), line(line_) {
 
+    this->setGeometry(0,0,500,500);
+    this->setStyleSheet("background-color: white;");
 }
 
 Visualizer::~Visualizer() {
@@ -56,6 +58,9 @@ void Visualizer::drawDots(QPaintEvent *p) {
     QPen bluePen( Qt::blue, 2 );
     QPen greenPen( Qt::darkGreen, 2);
 
+    int windowHeight = this->size().height();
+    int windowWidth =  this->size().width();
+
 
     for (int k = 0; k < data.size(); ++k) {
 
@@ -64,7 +69,7 @@ void Visualizer::drawDots(QPaintEvent *p) {
         } else {
             painter.setPen(greenPen);
         }
-        painter.drawEllipse(QPoint(500*data[k][0], 500*data[k][1]), 2, 2);
+        painter.drawEllipse(QPoint(windowWidth*data[k][0], windowHeight*data[k][1]), 2, 2);
     }
 
 
@@ -73,13 +78,16 @@ void Visualizer::drawDots(QPaintEvent *p) {
 
 void Visualizer::drawLine(QPaintEvent *p) {
 
+    int windowHeight = this->size().height();
+    int windowWidth =  this->size().width();
+
     QPainter painter(this);
     QPen redPen(Qt::red, 2);
     painter.setPen(redPen);
-    unsigned int scale = 500;
+
     double line1X = line[2]/line[0];
     double line2X = (line[2] - line[1]) / line[0];
-    painter.drawLine(QPoint(scale*line1X, scale*0 ), QPoint(scale*line2X, scale*1) );
+    painter.drawLine(QPoint(windowWidth*line1X, 0 ), QPoint(windowWidth *line2X, windowHeight) );
 
 }
 

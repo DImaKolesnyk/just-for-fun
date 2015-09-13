@@ -4,7 +4,7 @@ project(perceptron)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES main.cpp)
-add_executable(perceptron ${SOURCE_FILES} Perceptron.cpp Perceptron.h LearnPerceptron.cpp LearnPerceptron.h Visualizer.cpp Visualizer.h)
+add_executable(perceptron ${SOURCE_FILES} Perceptron.cpp Perceptron.h LearnPerceptron.cpp LearnPerceptron.h Visualizer.cpp Visualizer.h ILinearClassificationLearner.h Parser.cpp Parser.h)
 
 ##--------------------------------------Qt
 find_package( Qt5Core REQUIRED )

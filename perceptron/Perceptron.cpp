@@ -9,7 +9,7 @@ Perceptron::Perceptron(const std::vector<double> &w, double t) : weight(w), thre
 }
 
 Perceptron::~Perceptron() {
-
+    std::vector<double>().swap(weight);
 }
 
 void Perceptron::setWeight(const std::vector<double> &w, double t) {
@@ -20,7 +20,8 @@ void Perceptron::setWeight(const std::vector<double> &w, double t) {
 
 std::vector <double> Perceptron::getWeightAndThreshold() {
 
-    std::vector <double> a = weight;
+    std::vector<double> a(weight.size() + 1);
+    a = weight;
     a.push_back(threshold);
 
     return a;
@@ -29,20 +30,13 @@ std::vector <double> Perceptron::getWeightAndThreshold() {
 
 bool Perceptron::classification(const std::vector< double > &x) {
 
-    bool a;
     double weightSum = -threshold;
-
-    for (int i = 0; i < weight.size(); ++i) {
-
-        weightSum += weight[i]*x[i];
+    std::vector<double>::const_iterator xit = x.begin();
+    for ( const double& w: weight) {
+        weightSum += w * (*xit);
+        ++xit;
     }
 
-    if (weightSum >= 0 ) {
-        a = 1;
-    } else {
-        a = 0;
-    }
-
-    return a;
+    return (weightSum >= 0.0);
 }
 

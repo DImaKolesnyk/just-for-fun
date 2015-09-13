@@ -27,14 +27,9 @@ Perceptron LearnPerceptron::learn(std::vector<std::vector<double> > &train) {
         for (int i = 0; i < 80; ++i) {
             myAnswer = perceptron.classification(train[i]);
             if ( myAnswer != train[i][2]){
-                //-----
-//                std::cout << perceptron.classification(train[i]) << "=?" << train[i][2] << std::endl;
-//                std::cout << "weight vector: " << weight[0] << "," << weight[1] << "; " << std::endl;
-//                std::cout << "train " << train[i][0] << ", " << train[i][1] << "; " << std::endl;
-                //-----
+
                 weight[0] = weight[0] + 0.5*(train[i][2] -  myAnswer)*train[i][0];
                 weight[1] = weight[1] + 0.5*(train[i][2] -  myAnswer)*train[i][1];
-//                std::cout << "New weight vector: " << weight[0] << "," << weight[1] << "; " << std::endl;
                 threshold = threshold + 0.18*(train[i][2] -  myAnswer);
                 perceptron.setWeight(weight, threshold);
 

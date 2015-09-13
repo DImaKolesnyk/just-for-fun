@@ -5,10 +5,10 @@
 #ifndef PERCEPTRON_LEARNPERCEPTRON_H
 #define PERCEPTRON_LEARNPERCEPTRON_H
 
-#include "Perceptron.h"
+#include "ILinearClassificationLearner.h"
 
 
-class LearnPerceptron {
+class LearnPerceptron : public ILinearClassificationLearner {
 public:
     LearnPerceptron();
     Perceptron learn (std::vector < std::vector < double> > &train);
