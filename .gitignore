@@ -28,7 +28,7 @@
 *.app
 
 #IDE
-perceptron/.idea*
+perceptron/.idea/
 
 #Doxygen
 perceptron/html/
