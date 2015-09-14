@@ -8,11 +8,14 @@
 #include <iostream>
 #include <vector>
 
+/**
+ * Perceptron - is the model of hyperplane, which classifies of data.
+ */
 
 class Perceptron {
 private:
-    std::vector < double > weight;
-    double threshold;
+    std::vector < double > weight; ///< Weights on perceptron synapses.
+    double threshold; ///< Weights of bias input.
 
 public:
     Perceptron (const std::vector < double > &w, double threshold);
