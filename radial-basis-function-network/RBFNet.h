@@ -1,0 +1,14 @@
+//
+// Created by dima on 19.10.15.
+//
+
+#ifndef RADIAL_BASIS_FUNCTION_NETWORK_RBFNET_H
+#define RADIAL_BASIS_FUNCTION_NETWORK_RBFNET_H
+
+class RBFNet {
+
+
+};
+
+
+#endif //RADIAL_BASIS_FUNCTION_NETWORK_RBFNET_H
