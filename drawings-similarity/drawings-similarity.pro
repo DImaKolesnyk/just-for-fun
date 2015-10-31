@@ -13,8 +13,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        DrawTreeWindow.cpp
+        MainWindow.cpp \
+    DrawingPlace.cpp \
+    Controller.cpp
 
-HEADERS  += DrawTreeWindow.h
+HEADERS  += \
+    DrawingPlace.h \
+    MainWindow.h \
+    contour.h \
+    Controller.h
 
-FORMS    += DrawTreeWindow.ui
+FORMS    += MainWindow.ui
