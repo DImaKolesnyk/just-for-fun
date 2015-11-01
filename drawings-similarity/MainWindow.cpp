@@ -20,6 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect( ui->RightWidget, SIGNAL(DotCreated(QPoint)),
                       controller, SLOT(addDotToRightWidget(QPoint)));
+
+    QObject::connect(ui->pushButton,  SIGNAL(clicked()),
+                     controller, SLOT(buttonClicked()));
 }
 
 MainWindow::~MainWindow()

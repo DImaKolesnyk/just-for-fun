@@ -13,6 +13,7 @@ private:
    std::vector< Contour* > allLeftContour;
    std::vector< Contour* > allRightContour;
    void _RepaintAll();
+   bool nesting(const QPoint &test, const Contour &polygon  );
 
 public:
     Controller(DrawingPlace *lp, DrawingPlace *rp);
@@ -20,6 +21,7 @@ public:
 public slots:
     void addDotToLeftWidget(QPoint);
     void addDotToRightWidget(QPoint);
+    void buttonClicked();
 };
 
 #endif // CONTROLLER_H

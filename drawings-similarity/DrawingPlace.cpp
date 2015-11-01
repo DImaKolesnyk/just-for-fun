@@ -56,7 +56,7 @@ void DrawingPlace::drawContour(QPaintEvent *)
 
     painter.setPen(penDarkGray);
         for (auto contourPair : contours) {
-            if (contourPair.second == QPen(Qt::blue, 2) ) {
+            if ( !(contourPair.first->full()) && contourPair.second == QPen(Qt::blue, 2) ) {
             for (size_t j = 0; j < contourPair.first->size(); ++j) {
                 painter.drawEllipse(
                             (*(contourPair.first))[j], 2,2
