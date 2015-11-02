@@ -75,11 +75,51 @@ bool Controller::nesting(const QPoint &test, const Contour &polygon  ) {
     return w!=0;
 
 }
+unsigned int Controller::internalContour(const  std::vector< Contour* > &allContour, const std::vector<int> &buff) {
+
+            int nu;
+            for (int i = 0; i < buff.size(); ++i) {
+                nu = 0;
+                for( int j = 0; j < buff.size(); ++j) {
+                    if( nesting( (*(allContour[ buff[i] ]))[0],  (*(allContour[ buff[j] ])) )) {
+                        nu +=1;
+                    }
+                }
+                if(nu == buff.size() - 1) {return buff[i]; }
+            }
+}
 
 
+Tree Controller::createTree(const  std::vector< Contour* > &allContour){
+
+    Tree tree;
+    std::vector <std::vector <int> > buff;
+    for(int i = 0; i < allContour.size()-1 ; ++i ) {
+        buff.push_back(std::vector<int>());
+        for(int j = 0; j < allContour.size()-1; ++j ) {
+            if (nesting( (*(allContour[i]))[0], (*(allContour[j])))) {
+                buff[i].push_back(j);
+            }
+        }
+    }
+    for(int i = 0; i < buff.size(); ++i) {
+        if (buff[i].size() == 0) {
+        tree.addNode(Node(-1, i));
+        } else if ( buff[i].size() == 1 ) {
+            tree.addNode(Node( buff[i][0], i ) );
+        } else {
+            tree.addNode( Node( internalContour(allContour, buff[i]), i ));
+        }
+    }
+    return tree;
+}
 
 
 void Controller::buttonClicked() {
 
+    Tree leftTree;
+    Tree rightTree;
+    leftTree = createTree(allLeftContour);
+    rightTree = createTree(allRightContour);
 
 }

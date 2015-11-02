@@ -21,6 +21,8 @@ HEADERS  += \
     DrawingPlace.h \
     MainWindow.h \
     contour.h \
-    Controller.h
+    Controller.h \
+    tree.h \
+    node.h
 
 FORMS    += MainWindow.ui
