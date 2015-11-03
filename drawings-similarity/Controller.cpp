@@ -56,7 +56,7 @@ bool Controller::nesting(const QPoint &test, const Contour &polygon  ) {
     int pred_q = q_patt[ pred_pt.y() < 0 ][ pred_pt.x() < 0 ];
     int w = 0;
 
-    for(int i = 0; i < polygon.size(); ++i ) {
+    for(size_t i = 0; i < polygon.size(); ++i ) {
 
         QPoint cur_pt = polygon[i];
         cur_pt.setX( cur_pt.x() - test.x() );
@@ -78,9 +78,9 @@ bool Controller::nesting(const QPoint &test, const Contour &polygon  ) {
 unsigned int Controller::internalContour(const  std::vector< Contour* > &allContour, const std::vector<int> &buff) {
 
             int nu;
-            for (int i = 0; i < buff.size(); ++i) {
+            for (size_t i = 0; i < buff.size(); ++i) {
                 nu = 0;
-                for( int j = 0; j < buff.size(); ++j) {
+                for( size_t j = 0; j < buff.size(); ++j) {
                     if( nesting( (*(allContour[ buff[i] ]))[0],  (*(allContour[ buff[j] ])) )) {
                         nu +=1;
                     }
@@ -94,15 +94,15 @@ Tree Controller::createTree(const  std::vector< Contour* > &allContour){
 
     Tree tree;
     std::vector <std::vector <int> > buff;
-    for(int i = 0; i < allContour.size()-1 ; ++i ) {
+    for(size_t i = 0; i < allContour.size()-1 ; ++i ) {
         buff.push_back(std::vector<int>());
-        for(int j = 0; j < allContour.size()-1; ++j ) {
+        for(size_t j = 0; j < allContour.size()-1; ++j ) {
             if (nesting( (*(allContour[i]))[0], (*(allContour[j])))) {
                 buff[i].push_back(j);
             }
         }
     }
-    for(int i = 0; i < buff.size(); ++i) {
+    for(size_t i = 0; i < buff.size(); ++i) {
         if (buff[i].size() == 0) {
         tree.addNode(Node(-1, i));
         } else if ( buff[i].size() == 1 ) {
@@ -114,6 +114,62 @@ Tree Controller::createTree(const  std::vector< Contour* > &allContour){
     return tree;
 }
 
+bool Controller::frechet_dist(const Contour &a, const Contour &b, double eps){
+    return true;
+}
+
+bool Controller::try_kuhn (int v, std::vector<bool> &used, const std::vector <std::vector<int> > &g) {
+    if (used[v])  return false;
+    used[v] = true;
+    for (size_t i=0; i<g[v].size(); ++i) {
+        int to = g[v][i];
+        if (mt[to] == -1 || try_kuhn (mt[to])) {
+            mt[to] = v;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Controller::isomorphic(const Tree &a, const Tree &b) {
+
+    bool iso = false;
+    int aSize = a.getSortedTree().size();
+    int bSize = b.getSortedTree().size();
+    if( (allLeftContour.size() != allRightContour.size()) || (aSize != bSize) ) { return iso; }
+
+   //Use Evgeniy Vodolazskiy algorithm to assign  array of constraint
+    std::vector< std::vector<bool> > constraint;
+    for(size_t i = 0; i < allLeftContour.size(); ++i){
+        constraint.push_back(std::vector<bool>());
+        for(size_t j = 0; j < allRightContour.size(); ++j) {
+            constraint[i].push_back(frechet_dist(
+                        (*(allLeftContour[i])),
+                        (*(allRightContour[j])),
+                        2
+                        ));
+        }
+    }
+    //----------------------------------------------------------------------------------
+
+    int n, k;
+    std::vector<int> mt;
+    std::vector<bool> used;
+    std::vector < std::vector<int> > g;
+
+    for(int i = 0; i < aSize; ++i ){
+
+
+        mt.assign (k, -1);
+        for (int v=0; v<n; ++v) {
+            used.assign (n, false);
+            try_kuhn (v, used, g);
+        }
+    }
+
+
+
+}
 
 void Controller::buttonClicked() {
 
@@ -121,5 +177,10 @@ void Controller::buttonClicked() {
     Tree rightTree;
     leftTree = createTree(allLeftContour);
     rightTree = createTree(allRightContour);
+    leftTree.levelSort();
+    rightTree.levelSort();
+
+    leftTree.viewSorted();
+
 
 }

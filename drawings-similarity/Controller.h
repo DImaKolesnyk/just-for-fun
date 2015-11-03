@@ -3,6 +3,7 @@
 
 #include "DrawingPlace.h"
 #include "tree.h"
+//#include "../../tree-iso/Hausdorff-master/src/hausdorff.h"
 
 class Controller : public QObject
 {
@@ -17,6 +18,9 @@ private:
    bool nesting(const QPoint &test, const Contour &polygon  );
    unsigned int internalContour(const  std::vector< Contour* > &allContour, const std::vector<int> &buff);
    Tree createTree(const  std::vector< Contour* > &allContour);
+   bool isomorphic(const Tree &a, const Tree &b );
+   bool frechet_dist(const Contour &a, const Contour &b, double eps);
+   bool try_kuhn (int v, std::vector<bool> &used, const std::vector <std::vector<int> > &g);
 
 public:
     Controller(DrawingPlace *lp, DrawingPlace *rp);

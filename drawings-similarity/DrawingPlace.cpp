@@ -20,7 +20,7 @@ void DrawingPlace::drawCoordinateGrid(QPaintEvent *paint_event)
 
     painter.setPen(penGray);
     //---------------------------------draw vertical lines
-    for ( int i = 0; i < windowWidth/lineInterval; ++i ) {
+    for ( size_t i = 0; i < windowWidth/lineInterval; ++i ) {
         vertLineP1.setX( vertLineP1.x() + lineInterval);
         vertLineP2.setX( vertLineP2.x() + lineInterval);
         painter.drawLine(vertLineP1,vertLineP2);
@@ -31,7 +31,7 @@ void DrawingPlace::drawCoordinateGrid(QPaintEvent *paint_event)
 
     //---------------------------------draw horisontal lines
 
-    for (int i = 0; i < windowHeight/lineInterval; ++i) {
+    for (size_t i = 0; i < windowHeight/lineInterval; ++i) {
         horLineP1.setY(horLineP1.y() + lineInterval);
         horLineP2.setY(horLineP2.y() + lineInterval);
         painter.drawLine(horLineP1, horLineP2);
