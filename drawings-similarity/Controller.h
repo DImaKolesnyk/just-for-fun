@@ -29,6 +29,15 @@ private:
    std::map<Node*, Node*> findMaximumMatching(  std::vector<Node*> &a,   std::vector<Node*> &b, const std::vector< std::vector<bool> > &constraint );
    double getDistBetweenPointAndStraight(const QPoint &firstLinePoint,const QPoint &SecondLinePoint,const QPoint &point);
 
+
+   //Iso algo function
+   void interval(QPoint x, QPoint y1, QPoint y2, double* a, double* b, double eps);
+   double point_distance(QPoint a, QPoint b);
+   QPoint point_mul(double x, QPoint a);
+   double point_abs(QPoint a);
+   double point_scalar(QPoint a, QPoint b);
+   inline static void push(double a1, double b1, double* a2, double* b2);
+
 public:
     Controller(DrawingPlace *lp, DrawingPlace *rp);
 

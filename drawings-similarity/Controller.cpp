@@ -114,8 +114,123 @@ Tree Controller::createTree(const  std::vector< Contour* > &allContour){
     return tree;
 }
 
+double Controller::point_scalar(QPoint a, QPoint b){
+    return a.x()*b.x() + a.y()*b.y();
+}
+
+double Controller::point_abs(QPoint a){
+    return sqrt(point_scalar(a, a));
+}
+
+QPoint Controller::point_mul(double x, QPoint a){
+    return QPoint(x*a.x(),  x*a.y() );
+}
+
+double Controller::point_distance(QPoint a, QPoint b){
+    return point_abs( QPoint(
+                b.x() - a.x(),
+                b.y()  - a.y()
+                ));
+}
+
+inline void Controller::push(double a1, double b1, double* a2, double* b2){
+    if (a1>*a2) *a2 = a1;
+    if (a1>b1){
+        *a2 = 1;
+        *b2 = -1;
+    }
+}
+
+void Controller::interval(QPoint x, QPoint y1, QPoint y2, double*  a, double* b, double eps){
+    QPoint dy;
+    dy = QPoint(y2.x() - y1.x(), y2.y() - y1.y());
+    double alpha = point_scalar(dy, QPoint(x.x() - y1.x(), x.y() - y1.y()) )
+                      /
+                   ( pow( (point_abs(dy)), 2));
+    QPoint theta = QPoint(
+                point_mul(alpha, dy).x() + y1.x(),
+                point_mul(alpha, dy).y() + y1.y()
+                );
+    double sqr_delta = eps*eps - pow( (point_distance(theta, x)), 2);
+    if(sqr_delta<0){
+        *a = 1;
+        *b = -1;
+        return;
+    }
+    double delta = sqrt(sqr_delta);
+    *a = alpha*point_abs(dy)-delta;
+    *b = alpha*point_abs(dy)+delta;
+}
+
 bool Controller::frechet_dist(const Contour &a, const Contour &b, double eps){
-    return true;
+    int n = a.size() + 1;
+    int m = 2*b.size() + 1;
+
+    std::vector<std::vector< double > > ha(n, std::vector<double>(m));
+    std::vector<std::vector< double > > hb(n, std::vector<double>(m));
+    std::vector<std::vector< double > > va(n, std::vector<double>(m));
+    std::vector<std::vector< double > > vb(n, std::vector<double>(m));
+
+
+    int i, j;
+    for(i=0; i<n; i++)
+    for(j=0; j<m; j++){
+        interval(
+                    a[i%a.size()],
+                    b[j%b.size()],
+                    b[(j+1)%b.size()],
+                    &va[i][j],
+                    &vb[i][j],
+                    eps);
+        interval(
+                    b[j%b.size()],
+                    a[i%a.size()],
+                    a[(i+1)%a.size()],
+                    &ha[i][j],
+                    &hb[i][j],
+                    eps);
+    }
+
+    for(i=0; i<n; i++){
+        ha[i][0] = 1;
+        hb[i][0] = -1;
+        ha[i][m-1] = 1;
+        hb[i][m-1] = -1;
+    }
+
+    for(j=0; j<m; j++){
+        if(j<b.size()){
+            va[n-1][j] = 1;
+            vb[n-1][j] = -1;
+        }else{
+            va[0][j] = 1;
+            vb[0][j] = -1;
+        }
+
+    }
+
+    int change = 1;
+    while(change){
+        change = 0;
+        for(i=0; i<n-1; i++)
+        for(j=0; j<m-1; j++){
+            if(va[i][j] > vb[i][j]) push(ha[i][j], hb[i][j], &ha[i][j+1], &hb[i][j+1]);
+            if(ha[i][j] > hb[i][j]) push(va[i][j], vb[i][j], &va[i+1][j], &vb[i+1][j]);
+        }
+        for(j=0; j<b.size();j++){
+            if(va[0][j] < va[n-1][j+b.size()]){
+                va[0][j] = va[n-1][j+b.size()];
+                change = 1;
+            }
+        }
+
+    }
+
+    for(j=b.size(); j<2*b.size(); j++){
+        if(va[a.size()][j]<vb[a.size()][j]) return true;
+    }
+
+    return false;
 }
 
 bool Controller::kuhn (Node*  v,
@@ -191,13 +306,13 @@ bool Controller::isomorphic(const Tree &a, const Tree &b) {
 
    //Use Evgeniy Vodolazskiy algorithm to assign  array of constraint
     std::vector< std::vector<bool> > constraint;
-    for(size_t i = 0; i < allLeftContour.size(); ++i){
+    for(size_t i = 0; i < allLeftContour.size()-1; ++i){
         constraint.push_back(std::vector<bool>());
-        for(size_t j = 0; j < allRightContour.size(); ++j) {
+        for(size_t j = 0; j < allRightContour.size()-1; ++j) {
             constraint[i].push_back(frechet_dist(
                         (*(allLeftContour[i])),
                         (*(allRightContour[j])),
-                        2
+                        20
                         ));
         }
     }
@@ -306,7 +421,7 @@ void Controller::lengthBetweenMouseAndContour(QPoint p) {
 
         for (int j = 1; j < allLeftContour[i]->size(); ++j){
             di = getDistBetweenPointAndStraight( (*(allLeftContour[i]))[j-1], (*(allLeftContour[i]))[j], p);
-//            std::cout << di << std::endl;
+            std::cout << di << std::endl;
             if( di < 5) {
                 leftPlace->changePenToContour(allLeftContour[i], QPen(Qt::red, 4));
 
