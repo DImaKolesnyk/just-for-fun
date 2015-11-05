@@ -15,14 +15,22 @@ MainWindow::MainWindow(QWidget *parent) :
 
     controller = new Controller(ui->LeftWidget, ui->RightWidget);
 
-   QObject::connect( ui->LeftWidget, SIGNAL(DotCreated(QPoint)),
-                      controller, SLOT(addDotToLeftWidget(QPoint)));
+//   QObject::connect( ui->LeftWidget, SIGNAL(DotCreated(QPoint)),
+//                      controller, SLOT(controleLeftWidget(QPoint)));
+    QObject::connect( ui->LeftWidget, SIGNAL(DotCreated(QPoint)),
+                       controller, SLOT(addDotToLeftWidget(QPoint)));
 
     QObject::connect( ui->RightWidget, SIGNAL(DotCreated(QPoint)),
                       controller, SLOT(addDotToRightWidget(QPoint)));
 
     QObject::connect(ui->pushButton,  SIGNAL(clicked()),
                      controller, SLOT(buttonClicked()));
+
+    QObject::connect(ui->LeftWidget, SIGNAL(mouseMove(QPoint)),
+                     controller, SLOT(lengthBetweenMouseAndContour(QPoint)));
+
+    QObject::connect(controller, SIGNAL(changeLabel(QString)),
+                     ui->label, SLOT(setText(QString)));
 }
 
 MainWindow::~MainWindow()

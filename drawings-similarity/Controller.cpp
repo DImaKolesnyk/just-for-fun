@@ -1,7 +1,7 @@
 #include "Controller.h"
 #include <iostream>
 
-Controller::Controller(DrawingPlace *lp, DrawingPlace *rp)  : leftPlace(lp), rightPlace(rp)
+Controller::Controller(DrawingPlace *lp, DrawingPlace *rp)  : leftPlace(lp), rightPlace(rp), windowActive(true)
 {
     Contour* newContour = new Contour;
     allLeftContour.push_back(newContour);
@@ -104,11 +104,11 @@ Tree Controller::createTree(const  std::vector< Contour* > &allContour){
     }
     for(size_t i = 0; i < buff.size(); ++i) {
         if (buff[i].size() == 0) {
-        tree.addNode(Node(-1, i));
+        tree.addNode(new Node(-1, i));
         } else if ( buff[i].size() == 1 ) {
-            tree.addNode(Node( buff[i][0], i ) );
+            tree.addNode(new Node( buff[i][0], i ) );
         } else {
-            tree.addNode( Node( internalContour(allContour, buff[i]), i ));
+            tree.addNode( new Node( internalContour(allContour, buff[i]), i ));
         }
     }
     return tree;
@@ -118,12 +118,15 @@ bool Controller::frechet_dist(const Contour &a, const Contour &b, double eps){
     return true;
 }
 
-bool Controller::try_kuhn (int v, std::vector<bool> &used, const std::vector <std::vector<int> > &g) {
+bool Controller::kuhn (Node*  v,
+                                        std::map <Node*, bool> &used,
+                                        std::map <Node*, Node*> &mt,
+                                        std::map <Node*, std::vector< Node* > > &g) {
     if (used[v])  return false;
     used[v] = true;
     for (size_t i=0; i<g[v].size(); ++i) {
-        int to = g[v][i];
-        if (mt[to] == -1 || try_kuhn (mt[to])) {
+        Node* to = g[v][i];
+        if (mt[to] == nullptr || kuhn (mt[to], used, mt, g)) {
             mt[to] = v;
             return true;
         }
@@ -131,12 +134,60 @@ bool Controller::try_kuhn (int v, std::vector<bool> &used, const std::vector <st
     return false;
 }
 
+std::map<Node*, Node*> Controller::findMaximumMatching( std::vector<Node*> &a,   std::vector<Node*> &b, const std::vector< std::vector<bool> > &constraint ){
+
+    int n = a.size();
+    int k = b.size();
+    if (n != k) return std::map<Node*, Node*>();
+
+    //-------------------------------------------------------------- insert
+    std::map <Node*, std::vector< Node* > > g;
+    for(int i = 0; i < n; ++i ){
+    g[a[i]] = std::vector<Node*>() ;
+        for (int j = 0; j < k; ++j) {
+            if( constraint[a[i]->getId()][ b[j]->getId()] ) {
+                g[a[i]].push_back( b[j] );
+            }
+        }
+    }
+    //--------------------------------------------------------------
+    std::map <Node*, Node*> mt;
+    std::map <Node*, bool> used;
+
+    for( int i = 0; i < k; ++i ) {
+        mt[ b[i] ] = nullptr;
+     }
+     /*for ( int v = 0;  v < n; ++v )*/
+    for (auto Node: a){
+         for (int i = 0; i < n; ++i ){
+             used[ a[i] ] = false;
+         }
+        kuhn( Node, used, mt, g);
+     }
+
+    return mt;
+}
+
+bool Controller::maxMatchingAnswer(std::map<Node*, Node*> &mt) {
+
+    if( mt.size() == 0 ) {
+        return false;
+    }
+
+    for (auto nodePair : mt) {
+        if ( nodePair.second == nullptr ) {
+                return false;
+        }
+    }
+
+    return true;
+}
+
 bool Controller::isomorphic(const Tree &a, const Tree &b) {
 
-    bool iso = false;
     int aSize = a.getSortedTree().size();
     int bSize = b.getSortedTree().size();
-    if( (allLeftContour.size() != allRightContour.size()) || (aSize != bSize) ) { return iso; }
+    if( (allLeftContour.size() != allRightContour.size()) || (aSize != bSize) ) { return false; }
 
    //Use Evgeniy Vodolazskiy algorithm to assign  array of constraint
     std::vector< std::vector<bool> > constraint;
@@ -152,26 +203,35 @@ bool Controller::isomorphic(const Tree &a, const Tree &b) {
     }
     //----------------------------------------------------------------------------------
 
-    int n, k;
-    std::vector<int> mt;
-    std::vector<bool> used;
-    std::vector < std::vector<int> > g;
 
-    for(int i = 0; i < aSize; ++i ){
+    std::vector< std::vector<Node*> >  a_sortedTree = a.getSortedTree();
+    std::vector< std::vector<Node*> >  b_sortedTree = b.getSortedTree();
 
+    std::map<Node*, Node*> currentMaxMatching;
+    for ( int i = aSize-1; i >= 0; --i){
+        currentMaxMatching = findMaximumMatching(a_sortedTree[i], b_sortedTree[i], constraint);
+        if ( maxMatchingAnswer(currentMaxMatching)) {
 
-        mt.assign (k, -1);
-        for (int v=0; v<n; ++v) {
-            used.assign (n, false);
-            try_kuhn (v, used, g);
+            for ( auto  matchingNode : currentMaxMatching) {
+                if ( !( constraint[matchingNode.first->getId()][matchingNode.second->getId()] ) ) {
+                    return false;
+                } else {
+                    allMaximumMatchings.push_back( currentMaxMatching );
+                }
+            }
+
+        } else {
+            return false;
         }
     }
 
 
-
+    return true;
 }
 
 void Controller::buttonClicked() {
+
+    windowActive = false;
 
     Tree leftTree;
     Tree rightTree;
@@ -180,7 +240,109 @@ void Controller::buttonClicked() {
     leftTree.levelSort();
     rightTree.levelSort();
 
-    leftTree.viewSorted();
+
+    bool isoOtNot = isomorphic(leftTree, rightTree);
+    if (isoOtNot) {
+        emit changeLabel("Similar images!");
+    } else {
+        emit changeLabel("Images not similar!");
+    }
+
+}
+
+//void Controller::controleLeftWidget(QPoint p) {
+//    if(windowActive) {
+//        addDotToLeftWidget(p);
+//    }
+//}
+
+double Controller::getDistBetweenPointAndStraight(const QPoint &p1, const QPoint &p2, const QPoint &point){
+
+    int x = point.x();
+    int y = point.y();
+    int x1 = p1.x();
+    int y1 = p1.y();
+    int x2 = p2.x();
+    int y2 = p2.y();
+
+    double A = x - x1;
+    double B = y - y1;
+    double C = x2 - x1;
+    double D = y2 - y1;
+
+    double dot = A * C + B * D;
+    double len_sq = C * C + D * D;
+    double param = -1;
+    if (len_sq != 0) //in case of 0 length line
+        param = dot / len_sq;
+
+    double xx, yy;
+
+    if (param < 0) {
+      xx = x1;
+      yy = y1;
+    }
+    else if (param > 1) {
+      xx = x2;
+      yy = y2;
+    } else {
+      xx = x1 + param * C;
+      yy = y1 + param * D;
+    }
+
+    double dx = x - xx;
+    double dy = y - yy;
+    return sqrt(dx * dx + dy * dy);
+}
 
 
+void Controller::lengthBetweenMouseAndContour(QPoint p) {
+    leftPlace->setMouseTracking(true);
+    if (!windowActive) {
+
+      bool r = true;
+    double di;
+    for (int i = 0; i < allLeftContour.size(); ++i) {
+
+        for (int j = 1; j < allLeftContour[i]->size(); ++j){
+            di = getDistBetweenPointAndStraight( (*(allLeftContour[i]))[j-1], (*(allLeftContour[i]))[j], p);
+//            std::cout << di << std::endl;
+            if( di < 5) {
+                leftPlace->changePenToContour(allLeftContour[i], QPen(Qt::red, 4));
+
+                //colored right matching colour
+                for(int m = 0; m < allMaximumMatchings.size(); ++m) {
+                    for(auto matchingPair : allMaximumMatchings[m]) {
+                        if( matchingPair.first->getId() ==  i){
+                            rightPlace->changePenToContour(allRightContour[matchingPair.second->getId()], QPen(Qt::red, 4));
+                            if(coloredRightContourPosition[allRightContour[matchingPair.second->getId()]] == false) {
+                                coloredRightContourPosition[allRightContour[matchingPair.second->getId()]] = true;
+                            }
+                        }
+                    }
+                }
+                //-----------------------------------------
+
+                if( coloredContourPosition [allLeftContour[i]] == false ) {
+                    coloredContourPosition [allLeftContour[i]] = true;
+                }
+                r = false;
+               _RepaintAll();
+            }
+        }
+
+        if (r) {
+            for(auto coloredBoolPair: coloredContourPosition) {
+                leftPlace->changePenToContour(coloredBoolPair.first, QPen(Qt::blue, 2));
+                leftPlace->repaint();
+            }
+            for(auto coloredRigtBoolPair : coloredRightContourPosition) {
+                rightPlace->changePenToContour(coloredRigtBoolPair.first, QPen(Qt::blue, 2));
+                rightPlace->repaint();
+            }
+
+        }
+    }
+
+    }
 }

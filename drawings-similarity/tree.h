@@ -7,7 +7,7 @@
 class Tree {
 
 private:
-    std::vector<Node> treeNode;
+    std::vector<Node*> treeNode;
     std::vector< std::vector<Node*> > sortedTree;
 
     void alloc(unsigned int size, std::vector< std::vector<Node*> > &st) {
@@ -16,9 +16,9 @@ private:
         }
     }
 
-    Node find(int id) {
+    Node* find(int id) {
         int i = 0;
-        while( treeNode[i].getId() != id ) {
+        while( treeNode[i]->getId() != id ) {
             ++i;
         }
         return treeNode[i];
@@ -28,7 +28,7 @@ public:
     Tree() {}
     void view() {
         for(size_t i = 0; i < treeNode.size(); ++i){
-            std::cout << "( " << treeNode[i].getFatherId() << ", " << treeNode[i].getId() << ") " << std::endl;
+            std::cout << "( " << treeNode[i]->getFatherId() << ", " << treeNode[i]->getId() << ") " << std::endl;
         }
     }
 
@@ -44,23 +44,23 @@ public:
         }
     }
 
-     std::vector< std::vector<Node*> > getSortedTree() {
+     std::vector< std::vector<Node*> > getSortedTree() const {
          return sortedTree;
      }
 
-    void addNode(const Node &n  ) {treeNode.push_back(n); }
+    void addNode( Node* n  ) {treeNode.push_back(n); }
     void levelSort() {
         int nodeFather;
         unsigned int level = 0;
         for(size_t i = 0; i < treeNode.size(); ++i) {
-            nodeFather = treeNode[i].getFatherId();
+            nodeFather = treeNode[i]->getFatherId();
             while( nodeFather != -1 ) {
-                   nodeFather =  find(nodeFather).getFatherId();
+                   nodeFather =  find(nodeFather)->getFatherId();
                    ++level;
             }
 
             alloc(level, sortedTree);
-            sortedTree[level].push_back(&(treeNode[i]) );
+            sortedTree[level].push_back(treeNode[i] );
              level = 0;
         }
     }

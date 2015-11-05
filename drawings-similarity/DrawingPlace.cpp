@@ -1,13 +1,14 @@
 #include "DrawingPlace.h"
 #include<QtMath>
+#include <iostream>
 
-DrawingPlace::DrawingPlace(QWidget *)
+DrawingPlace::DrawingPlace(QWidget *) : oldPos(QPoint(0,0))
 {
 }
 
 void DrawingPlace::drawCoordinateGrid(QPaintEvent *paint_event)
 {
-    QFrame::paintEvent(paint_event);
+    QWidget::paintEvent(paint_event);
     int windowHeight = this->size().height();
     int windowWidth =  this->size().width();
     const int lineInterval = 20; // interval between two lines
@@ -81,4 +82,12 @@ void DrawingPlace::mousePressEvent(QMouseEvent *pe)
 
 void DrawingPlace::addContour( const  Contour * c, QPen qpen) {
     contours[c] = qpen;
+}
+
+void DrawingPlace::mouseMoveEvent(QMouseEvent *event){
+
+    if (event->pos().x() > oldPos.x()+5 || event->pos().x() < oldPos.x()-5 || event->pos().y() > oldPos.y()+5 || event->pos().y() < oldPos.y()-5 ) {
+        oldPos = event->pos();
+        emit mouseMove(event->pos());
+    }
 }
