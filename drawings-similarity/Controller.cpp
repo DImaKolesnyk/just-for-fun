@@ -337,9 +337,7 @@ bool Controller::isomorphic(const Tree &a, const Tree &b, double eps) {
             }
                 if ( !( constraint[matchingNode.second->getFatherId()][matchingNode.first->getFatherId()] ) ) {
                     return false;
-                } /*else {
-                    allMaximumMatchings.push_back( currentMaxMatching );
-                }*/
+                }
             }
              allMaximumMatchings.push_back( currentMaxMatching );
 
