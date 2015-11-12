@@ -333,8 +333,7 @@ bool Controller::isomorphic(const Tree &a, const Tree &b, double eps) {
 
             for ( auto  matchingNode : currentMaxMatching) {
                 if( matchingNode.first->getFatherId() == -1) {
-                   // allMaximumMatchings.push_back( currentMaxMatching );
-                    break;
+                   break;
             }
                 if ( !( constraint[matchingNode.second->getFatherId()][matchingNode.first->getFatherId()] ) ) {
                     return false;
