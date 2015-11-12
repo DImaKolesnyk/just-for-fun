@@ -65,6 +65,11 @@ public:
         }
     }
 
+    void clear() {
+        sortedTree.clear();
+        treeNode.clear();
+    }
+
 
 };
 

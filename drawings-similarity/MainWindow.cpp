@@ -25,12 +25,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(ui->pushButton,  SIGNAL(clicked()),
                      controller, SLOT(buttonClicked()));
+    QObject::connect(ui->pushButton_2, SIGNAL(clicked()),
+                     controller, SLOT(clearDrawingPlace()));
 
     QObject::connect(ui->LeftWidget, SIGNAL(mouseMove(QPoint)),
                      controller, SLOT(lengthBetweenMouseAndContour(QPoint)));
 
     QObject::connect(controller, SIGNAL(changeLabel(QString)),
                      ui->label, SLOT(setText(QString)));
+
+    QObject::connect(ui->doubleSpinBox, SIGNAL(valueChanged(double)),
+                     controller, SLOT(epsChanged(double)));
 }
 
 MainWindow::~MainWindow()

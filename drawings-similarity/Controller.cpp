@@ -1,7 +1,7 @@
 #include "Controller.h"
 #include <iostream>
 
-Controller::Controller(DrawingPlace *lp, DrawingPlace *rp)  : leftPlace(lp), rightPlace(rp), windowActive(true)
+Controller::Controller(DrawingPlace *lp, DrawingPlace *rp)  : leftPlace(lp), rightPlace(rp), windowActive(true), eps_(20)
 {
     Contour* newContour = new Contour;
     allLeftContour.push_back(newContour);
@@ -298,46 +298,55 @@ bool Controller::maxMatchingAnswer(std::map<Node*, Node*> &mt) {
     return true;
 }
 
-bool Controller::isomorphic(const Tree &a, const Tree &b) {
+void Controller::generateConstraint(std::vector< std::vector<bool> > &constraint, double eps) {
 
-    int aSize = a.getSortedTree().size();
-    int bSize = b.getSortedTree().size();
-    if( (allLeftContour.size() != allRightContour.size()) || (aSize != bSize) ) { return false; }
-
-   //Use Evgeniy Vodolazskiy algorithm to assign  array of constraint
-    std::vector< std::vector<bool> > constraint;
+    //Use Evgeniy Vodolazskiy algorithm to assign  array of constraint
     for(size_t i = 0; i < allLeftContour.size()-1; ++i){
         constraint.push_back(std::vector<bool>());
         for(size_t j = 0; j < allRightContour.size()-1; ++j) {
             constraint[i].push_back(frechet_dist(
                         (*(allLeftContour[i])),
                         (*(allRightContour[j])),
-                        20
+                        eps
                         ));
         }
     }
-    //----------------------------------------------------------------------------------
 
+}
 
+bool Controller::isomorphic(const Tree &a, const Tree &b, double eps) {
+
+    int aSize = a.getSortedTree().size();
+    int bSize = b.getSortedTree().size();
+    if( (allLeftContour.size() != allRightContour.size()) || (aSize != bSize) ) { return false; }
+    std::vector< std::vector<bool> > constraint;
+    generateConstraint(constraint, eps);
     std::vector< std::vector<Node*> >  a_sortedTree = a.getSortedTree();
     std::vector< std::vector<Node*> >  b_sortedTree = b.getSortedTree();
-
     std::map<Node*, Node*> currentMaxMatching;
+
+
     for ( int i = aSize-1; i >= 0; --i){
         currentMaxMatching = findMaximumMatching(a_sortedTree[i], b_sortedTree[i], constraint);
         if ( maxMatchingAnswer(currentMaxMatching)) {
 
-            for ( auto  matchingNode : currentMaxMatching) {
-                if ( !( constraint[matchingNode.first->getId()][matchingNode.second->getId()] ) ) {
-                    return false;
-                } else {
-                    allMaximumMatchings.push_back( currentMaxMatching );
-                }
-            }
 
-        } else {
-            return false;
-        }
+            for ( auto  matchingNode : currentMaxMatching) {
+                if( matchingNode.first->getFatherId() == -1) {
+                   // allMaximumMatchings.push_back( currentMaxMatching );
+                    break;
+            }
+                if ( !( constraint[matchingNode.second->getFatherId()][matchingNode.first->getFatherId()] ) ) {
+                    return false;
+                } /*else {
+                    allMaximumMatchings.push_back( currentMaxMatching );
+                }*/
+            }
+             allMaximumMatchings.push_back( currentMaxMatching );
+
+
+
+        } else { return false; }
     }
 
 
@@ -348,15 +357,14 @@ void Controller::buttonClicked() {
 
     windowActive = false;
 
-    Tree leftTree;
-    Tree rightTree;
+
     leftTree = createTree(allLeftContour);
     rightTree = createTree(allRightContour);
     leftTree.levelSort();
     rightTree.levelSort();
 
 
-    bool isoOtNot = isomorphic(leftTree, rightTree);
+    bool isoOtNot = isomorphic(leftTree, rightTree, eps_);
     if (isoOtNot) {
         emit changeLabel("Similar images!");
     } else {
@@ -428,10 +436,10 @@ void Controller::lengthBetweenMouseAndContour(QPoint p) {
                 //colored right matching colour
                 for(int m = 0; m < allMaximumMatchings.size(); ++m) {
                     for(auto matchingPair : allMaximumMatchings[m]) {
-                        if( matchingPair.first->getId() ==  i){
-                            rightPlace->changePenToContour(allRightContour[matchingPair.second->getId()], QPen(Qt::red, 4));
-                            if(coloredRightContourPosition[allRightContour[matchingPair.second->getId()]] == false) {
-                                coloredRightContourPosition[allRightContour[matchingPair.second->getId()]] = true;
+                        if( matchingPair.second->getId() ==  i){
+                            rightPlace->changePenToContour(allRightContour[matchingPair.first->getId()], QPen(Qt::red, 4));
+                            if(coloredRightContourPosition[allRightContour[matchingPair.first->getId()]] == false) {
+                                coloredRightContourPosition[allRightContour[matchingPair.first->getId()]] = true;
                             }
                         }
                     }
@@ -460,4 +468,33 @@ void Controller::lengthBetweenMouseAndContour(QPoint p) {
     }
 
     }
+}
+
+void Controller::clearDrawingPlace() {
+
+    leftTree.clear();
+    rightTree.clear();
+    coloredContourPosition.clear();
+    coloredRightContourPosition.clear();
+    windowActive = true;
+   leftPlace->clearContours();
+   rightPlace->clearContours();
+    allLeftContour.clear();
+   allRightContour.clear();
+   allMaximumMatchings.clear();
+   _RepaintAll();
+
+   Contour* newContour = new Contour;
+   allLeftContour.push_back(newContour);
+   leftPlace->addContour(newContour, QPen(Qt::blue, 2));
+   rightPlace->addContour(newContour, QPen(Qt::gray, 1)) ;
+
+   allRightContour.push_back(new Contour());
+   rightPlace->addContour(*allRightContour.rbegin(), QPen(Qt::blue, 2));
+
+
+}
+
+void Controller::epsChanged(double e) {
+    eps_ = e;
 }

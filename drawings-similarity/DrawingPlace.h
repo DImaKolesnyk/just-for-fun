@@ -19,6 +19,9 @@ public:
     }
 
     void drawCoordinateGrid(QPaintEvent *paint_event);
+    void clearContours() {
+        contours.clear();
+    }
 
 private:
         QPoint oldPos;

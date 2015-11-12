@@ -10,6 +10,9 @@ class Controller : public QObject
     Q_OBJECT
 
 private:
+    double eps_;
+    Tree leftTree;
+    Tree rightTree;
     std::map<Contour*, bool> coloredContourPosition;
      std::map<Contour*, bool> coloredRightContourPosition;
     bool windowActive;
@@ -22,13 +25,14 @@ private:
    bool nesting(const QPoint &test, const Contour &polygon  );
    unsigned int internalContour(const  std::vector< Contour* > &allContour, const std::vector<int> &buff);
    Tree createTree(const  std::vector< Contour* > &allContour);
-   bool isomorphic(const Tree &a, const Tree &b );
+   bool isomorphic(const Tree &a, const Tree &b , double eps);
    bool frechet_dist(const Contour &a, const Contour &b, double eps);
    bool kuhn (Node* v, std::map <Node*, bool> &used, std::map <Node*, Node*> &mt, std::map <Node*, std::vector< Node* > > &g);
    bool maxMatchingAnswer(std::map<Node*, Node*> &g);
    std::map<Node*, Node*> findMaximumMatching(  std::vector<Node*> &a,   std::vector<Node*> &b, const std::vector< std::vector<bool> > &constraint );
    double getDistBetweenPointAndStraight(const QPoint &firstLinePoint,const QPoint &SecondLinePoint,const QPoint &point);
 
+    void generateConstraint(std::vector< std::vector<bool> > &constraint, double eps);
 
    //Iso algo function
    void interval(QPoint x, QPoint y1, QPoint y2, double* a, double* b, double eps);
@@ -46,6 +50,8 @@ public slots:
     void addDotToLeftWidget(QPoint);
     void addDotToRightWidget(QPoint);
     void buttonClicked();
+    void clearDrawingPlace();
+    void epsChanged(double);
     void lengthBetweenMouseAndContour(QPoint);
 signals:
     void changeLabel(QString);
