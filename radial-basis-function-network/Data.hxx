@@ -21,18 +21,21 @@ void Data<DataType, dimension>::addPoint(const DataPoint<DataType, dimension> &p
     data.push_back(p);
 }
 
-template <typename DataType, unsigned int dimension>
-void Data<DataType, dimension>::consolePrint() {
-
-    for(auto &x: data) {
-        for (int i = 0; i < dimension; ++i) {
-            std::cout << x[i] << ", ";
-        }
-        std::cout << std::endl;
-    }
-}
 
 template <typename DataType, unsigned int dimension>
 unsigned int Data<DataType, dimension>::size() const {
     return data.size();
 };
+
+template <typename DataType, unsigned int dimension>
+std::ostream& operator<<(std::ostream& os, const Data<DataType, dimension>& d)
+{
+    for(int j = 0; j < d.size(); ++j) {
+        for (int i = 0; i < dimension; ++i) {
+            os << d[j][i] << ", ";
+        }
+        os << "Class: " << d[j].getClass();
+        os << std::endl;
+    }
+    return os;
+}

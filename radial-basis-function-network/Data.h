@@ -22,10 +22,13 @@ namespace mlt {
         Data<DataType, dimension>(){};
         Data<DataType, dimension>(const std::vector <DataPoint<DataType, dimension> > &d);
         DataPoint<DataType, dimension> operator[](std::size_t idx) const;
-        void consolePrint();
+        friend std::ostream& operator<<(std::ostream& os, const std::vector <DataPoint<DataType, dimension> >& obj);
+
         unsigned int size() const;
         void addPoint(const  DataPoint<DataType, dimension> &);
+        unsigned int getDimansion() { return  dimension; }
     };
+
 }
 
 #include "Data.hxx"

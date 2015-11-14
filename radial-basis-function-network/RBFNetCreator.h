@@ -9,14 +9,17 @@
 #include "RBFNet.h"
 #include "KMeansClustering.h"
 
-template<typename DataType, unsigned int dimension, unsigned int hidden>
+template<typename DataType, unsigned int dimension>
 class RBFNetCreator {
 private:
+    unsigned int hidden;
     unsigned int output;
-    Data<DataType, hidden> learnHiddenLayer(const Data <DataType, dimension> &d);
 public:
-    RBFNetCreator(unsigned int output);
-    RBFNet learn(const Data<DataType, dimension>  &d);
+    typedef RBFNet<DataType, dimension> TNet;
+
+    RBFNetCreator(unsigned int h, unsigned int o);
+    void learn(const Data<DataType, dimension> &d );
+    TNet get();
 
 };
 

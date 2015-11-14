@@ -15,9 +15,13 @@ namespace mlt {
     class DataPoint {
     private:
         std::vector<DataType> point;
+        int reallClass;
     public:
+        DataPoint<DataType, dimension>() {}
         DataPoint<DataType, dimension>(const std::vector<DataType> &p);
         DataType operator[](std::size_t idx) const;
+        void setClass(int c);
+        int getClass() const { return reallClass; }
     };
 
 }

@@ -21,17 +21,18 @@ Data<DataType, dimension> Parser<DataType, dimension>::get() {
     std::vector<DataType> buff;
     int i = 0;
     std::vector<DataPoint<DataType, dimension>> data;
+    DataPoint<DataType, dimension> currPoint;
 
-    while (!F.eof()) {
+    while (F >> a) {
 
-        F >> a;
-        buff.push_back(a);
         i += 1;
-
-        if ( i%dimension == 0 ) {
-
-            data.push_back(buff);
+        if( i%(dimension+1) == 0) {
+            currPoint = DataPoint<DataType, dimension>(buff);
             buff.clear();
+            currPoint.setClass(a);
+            data.push_back( currPoint );
+        } else {
+            buff.push_back(a);
         }
     }
     return Data<DataType, dimension>(data);
