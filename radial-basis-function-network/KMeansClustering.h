@@ -12,9 +12,12 @@
 
 template <typename DataType, unsigned int dimension>
 class KMeansClustering {
+private:
+    std::vector < Data<DataType, dimension> > classSet;
 public:
     virtual Data<DataType, dimension> toCluster(unsigned int k, const Data<DataType, dimension> &d );
     unsigned int clusteringOnePoint(unsigned int k, const DataPoint<DataType, dimension> &x, const Data<DataType, dimension> &mu);
+    std::vector < Data<DataType, dimension> > getClassSet();
 };
 
 #include "KMeansClustering.hxx"

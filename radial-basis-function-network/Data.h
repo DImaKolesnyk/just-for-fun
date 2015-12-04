@@ -26,7 +26,6 @@ namespace mlt {
 
         unsigned int size() const;
         void addPoint(const  DataPoint<DataType, dimension> &);
-        unsigned int getDimansion() { return  dimension; }
     };
 
 }

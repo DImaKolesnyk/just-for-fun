@@ -21,6 +21,7 @@ unsigned int KMeansClustering<DataType, dimension>::clusteringOnePoint(unsigned 
 template <typename DataType, unsigned int dimension>
 Data<DataType, dimension> KMeansClustering<DataType, dimension>::toCluster(unsigned int k, const Data<DataType, dimension> &data) {
 
+    classSet.reserve(k);
     std::vector<DataPoint<DataType, dimension>> centers;
     centers.reserve(k);
     for (int i = 0; i < k; ++i) { centers.push_back(data[(rand() % (int)(data.size() + 1))]); }
@@ -37,9 +38,14 @@ Data<DataType, dimension> KMeansClustering<DataType, dimension>::toCluster(unsig
         for (int j = 0; j < k; ++j) { // j e K
             if ( distance(centers[j], average(clSet[j])) > 0.2) { changeMu = true; }
             centers[j] = average(clSet[j]);
+            classSet[j] = clSet[j];
         }
         clSet = std::vector < Data<DataType, dimension> >(k);
     }
     return centers;
 }
 
+template <typename DataType, unsigned int dimension>
+std::vector< Data<DataType, dimension> > KMeansClustering<DataType, dimension>::getClassSet() {
+    return classSet;
+}

@@ -20,6 +20,7 @@ namespace mlt {
         DataPoint<DataType, dimension>() {}
         DataPoint<DataType, dimension>(const std::vector<DataType> &p);
         DataType operator[](std::size_t idx) const;
+        DataPoint<DataType, dimension> operator-(const DataPoint<DataType, dimension> &r_point);
         void setClass(int c);
         int getClass() const { return reallClass; }
     };

@@ -9,13 +9,16 @@
       <sourceFolder url="file://$MODULE_DIR$/DataPoint.hxx" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/KMeansClustering.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/KMeansClustering.hxx" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Neuron.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Neuron.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Parser.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Parser.hxx" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/RBFNet.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RBFNet.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/RBFNet.hxx" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RBFNetCreator.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RBFNetCreator.hxx" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/mltMath.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/mltMath.h" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
