@@ -7,11 +7,7 @@
 
 #include <string>
 #include <fstream>
-
-
-namespace mlt {
-    template <typename DataType, unsigned int dimension>
-    class Data;
+#include "Data.h"
 
     template<typename DataType, unsigned int dimension>
     class Parser {
@@ -19,10 +15,10 @@ namespace mlt {
         std::string fileName;
     public:
         Parser(const std::string &fn);
-        Data<DataType, dimension> get();
+        Data get();
     };
 
-}
+
 
 #include "Parser.hxx"
 

@@ -5,21 +5,22 @@
 #ifndef RADIAL_BASIS_FUNCTION_NETWORK_KMEANSCLUSTERING_H
 #define RADIAL_BASIS_FUNCTION_NETWORK_KMEANSCLUSTERING_H
 
-//#include "IСlustering.h"
+#include "IСlustering.h"
 #include "Data.h"
 #include "mltMath.h"
+#include <stdlib.h>  /* srand, rand */
+#include <time.h>
 
 
-template <typename DataType, unsigned int dimension>
-class KMeansClustering {
+
+class KMeansClustering : public IClustering{
 private:
-    std::vector < Data<DataType, dimension> > classSet;
+    std::vector < Data > classSet;
 public:
-    virtual Data<DataType, dimension> toCluster(unsigned int k, const Data<DataType, dimension> &d );
-    unsigned int clusteringOnePoint(unsigned int k, const DataPoint<DataType, dimension> &x, const Data<DataType, dimension> &mu);
-    std::vector < Data<DataType, dimension> > getClassSet();
+    Data toCluster(unsigned int k, const Data &d );
+    unsigned int clusteringOnePoint(unsigned int k, const Point &x, const Data &mu);
+    std::vector < Data > getClassSet();
 };
 
-#include "KMeansClustering.hxx"
 
 #endif //RADIAL_BASIS_FUNCTION_NETWORK_KMEANSCLUSTERING_H

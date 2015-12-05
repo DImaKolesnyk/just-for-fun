@@ -3,20 +3,21 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Data.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Data.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Data.hxx" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/DataPoint.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/DataPoint.hxx" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/IСlustering.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/KMeansClustering.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/KMeansClustering.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/KMeansClustering.hxx" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Neuron.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Neuron.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Net.hpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/NetBuilder.hpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Parser.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Parser.hxx" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Point.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Point.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/RBFNet.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RBFNet.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/RBFNet.hxx" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/RBFNetCreator.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/RBFNetCreator.hxx" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/RBFNetBuilder.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/RBFNetBuilder.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/mltMath.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/mltMath.h" isTestSource="false" />

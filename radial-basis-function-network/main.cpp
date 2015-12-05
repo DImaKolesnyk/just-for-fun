@@ -1,18 +1,20 @@
 #include "Data.h"
-#include "RBFNetCreator.h"
+#include "Parser.h"
+#include "RBFNetBuilder.h"
+#include "Creator.hpp"
+
 
 int main() {
 
-    typedef mlt::Data<double, 4> DataType;
-    DataType::TParser parser("/run/media/dima/732F6FE51C3B609E/project/cpp/just-for-fun/radial-basis-function-network/iris.data");
-    DataType data = parser.get();
+    std::string file = "/run/media/dima/732F6FE51C3B609E/project/cpp/just-for-fun/radial-basis-function-network/iris.data";
+    Data data = Parser<double, 4>(file).get();
+    Data trainSet = data.part(0, 0.8);
+    Data testSet = data.part(0.8, 1);
 
-    RBFNetCreator<double, 4> creator(10, 3);
-    creator.learn(data);
-    RBFNet<double,4> net = creator.get();
-    //RBFNetCreator::Net net = creator.get();
+    Net * net = Creator().learn( RBFNetBuilder(10, 3), trainSet );
 
-    for (int i = 0; i < data.size(); ++i) {
-        std::cout << "Net answer:" << net.classify(data[i]) << ", Real answer: " << data[i].getClass() << std::endl;
+    for (int i = 0; i < testSet.size(); ++i) {
+        std::cout << "Net answer:" << net->classify(testSet[i]) << ", Real answer: " << testSet[i].getClass() << std::endl;
     }
+
 }

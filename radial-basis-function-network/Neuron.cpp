@@ -19,7 +19,7 @@ void Neuron::learn(std::vector<double> phi, int realClass) {
     }
 
 //    while ( norm(
-//            DataPoint<double, input>(oldWeight) - DataPoint<double, input>(weight)  ) > 0.01 ) {
+//            Point<double, input>(oldWeight) - Point<double, input>(weight)  ) > 0.01 ) {
 
     while ( dist(oldWeight, weight) > 0.01 ) {
         weight[0] = weight[0] + 0.5 * (realClass - oldWeightSum);

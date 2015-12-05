@@ -2,7 +2,7 @@
 // Created by dima on 19.10.15.
 //
 
-
+#include "RBFNetBuilder.h"
 #include "KMeansClustering.h"
 
 template<typename DataType, unsigned int dimension>
