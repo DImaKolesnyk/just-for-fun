@@ -9,9 +9,9 @@
 
 class NetBuilder {
 public:
-    virtual void learn(const NetBuilder &builder, const Data &d);
-    virtual Net * get();
-    virtual ~NetBuilder();
+    virtual void learn(const Data &d) {};
+    virtual Net * get() {};
+    virtual ~NetBuilder() {};
 };
 
 #endif //RADIAL_BASIS_FUNCTION_NETWORK_NETBUILDER_HPP

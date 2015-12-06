@@ -7,14 +7,17 @@
 
 #include <vector>
 #include "mltMath.h"
+#include "Net.hpp"
 
-class Neuron {
+class Neuron : public Net{
 private:
     unsigned int input;
     std::vector < double > weight;
 public:
+    Neuron() {}
     Neuron(unsigned int inputSize);
-    void learn(std::vector<double> phi, int realClass);
+//    void learn(std::vector<double> phi, int realClass);
+    int getWeightSumm(const Point &p) const;
 };
 
 

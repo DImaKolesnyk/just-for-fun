@@ -3,6 +3,8 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Creator.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Creator.hpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Data.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Data.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/IСlustering.h" isTestSource="false" />
@@ -10,6 +12,10 @@
       <sourceFolder url="file://$MODULE_DIR$/KMeansClustering.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Net.hpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/NetBuilder.hpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Neuron.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Neuron.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/NeuronBuilder.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/NeuronBuilder.hpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Parser.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Parser.hxx" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Point.cpp" isTestSource="false" />

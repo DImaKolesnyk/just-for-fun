@@ -3,13 +3,13 @@
 //
 #include "Creator.hpp"
 
-Creator::Creator() : net(nullptr){
+Creator::Creator(){
 
 }
 
-Net * Creator::learn(const NetBuilder &builder, const Data &data ) {
+Net * Creator::learn(NetBuilder builder, const Data &data ) {
 
-    net = builder.learn(data);
+    builder.learn(data);
     return builder.get();
 }
 

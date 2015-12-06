@@ -26,8 +26,12 @@ set(SOURCE_FILES
         KMeansClustering.cpp
         KMeansClustering.h
         IСlustering.h
-#        Neuron.h
-#        Neuron.cpp
+        Creator.cpp
+        Creator.hpp
+        Neuron.h
+        Neuron.cpp
+        NeuronBuilder.cpp
+        NeuronBuilder.hpp
 )
 add_executable(radial_basis_function_network ${SOURCE_FILES})
 target_link_libraries( radial_basis_function_network ${OpenCV_LIBS} )

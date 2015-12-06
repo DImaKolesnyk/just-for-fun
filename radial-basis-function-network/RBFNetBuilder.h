@@ -14,16 +14,16 @@ class RBFNetBuilder : public NetBuilder {
 private:
     unsigned int hidden;
     unsigned int output;
-    RBFNet net;
+    RBFNet* net;
 
     void learnHidenLayer(const Data &d);
     void learnOutputLayer(const Data &d);
     std::vector<std::pair< Point, double>> coeffs;
-public:
 
+public:
     RBFNetBuilder(unsigned int h, unsigned int o);
-    void learn(const RBFNetBuilder &buildr, const Data &d );
-    RBFNet * get();
+    void learn(const Data &d );
+    Net* get();
 
 };
 

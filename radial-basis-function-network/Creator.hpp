@@ -6,11 +6,12 @@
 #define RADIAL_BASIS_FUNCTION_NETWORK_CREATOR_HPP
 
 #include "Net.hpp"
+#include "NetBuilder.hpp"
 
 class Creator {
 public:
     Creator();
-    Net * learn(const NetBuilder &builder, const Data &data );
+    Net * learn(NetBuilder builder, const Data &data );
 };
 
 #endif //RADIAL_BASIS_FUNCTION_NETWORK_CREATOR_HPP
