@@ -26,7 +26,9 @@ Data KMeansClustering::toCluster(unsigned int k, const Data &data) {
     std::vector<Point> centers;
     centers.reserve(k);
     srand(time(NULL));
-    for (int i = 0; i < k; ++i) { centers.push_back(data[( rand() % (int)(data.size() + 1))]); }
+    for (int i = 0; i < k; ++i) { centers.push_back(data[
+                                                            ( rand() % (int)(data.size() + 1))
+                                                    ]); }
 
     bool changeMu = true;
     std::vector < Data > clSet(k);

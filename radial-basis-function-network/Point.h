@@ -22,10 +22,11 @@
         Point(const std::vector<double> &p);
         double operator[](std::size_t idx) const;
         friend std::ostream& operator<<(std::ostream& os, const Point& obj);
-        Point operator-(const Point &r_point);
+        Point operator-(const Point &r_point) const;
         void setClass(int c);
         int getClass() const { return reallClass; }
-        unsigned int dim() const { return dimension; }
+        unsigned int dim() const { return point.size(); }
+        void setDim(unsigned int dim) { dimension = dim;  }
     };
 
 

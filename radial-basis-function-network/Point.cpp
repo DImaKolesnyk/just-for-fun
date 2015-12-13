@@ -21,7 +21,7 @@ void Point::setClass(int c) {
 }
 
 
-Point Point::operator-( const Point &r_point ) {
+Point Point::operator-( const Point &r_point ) const {
 
     std::vector<double> n_point;
     for (int i = 0; i < dimension; ++i) {
@@ -38,7 +38,8 @@ std::ostream& operator<<(std::ostream& os, const Point& p)
             os << std::fixed << std::setprecision(1);
             os << p[i] << " | ";
         }
-        os << "Class: " << p.getClass();
+        os << "Class: " << p.getClass() << " | ";
+        os << "dimension: " << p.dim();
 
     return os;
 }

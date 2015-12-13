@@ -8,10 +8,13 @@ Data::Data(const std::vector<Point> &d)
 }
 
 
-Point Data::operator[](std::size_t idx) const{
+Point& Data::operator[](std::size_t idx) {
     return data[idx];
 }
 
+const Point& Data::operator[](std::size_t idx) const {
+    return data[idx];
+}
 
 void Data::addPoint(const Point &p) {
 
@@ -36,4 +39,10 @@ Data Data::part(float first, float last) {
     std::vector<Point>::const_iterator f_it = data.begin() + data.size()*first;
     std::vector<Point>::const_iterator l_it = data.begin() + data.size()*last;
     return Data( std::vector<Point>( f_it, l_it ) );
+}
+
+Data Data::shuffle() {
+    std::srand ( unsigned ( std::time(0) ) );
+    std::random_shuffle ( data.begin(), data.end() );
+    return *this;
 }

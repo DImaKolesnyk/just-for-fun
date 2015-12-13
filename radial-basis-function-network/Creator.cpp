@@ -7,9 +7,8 @@ Creator::Creator(){
 
 }
 
-Net * Creator::learn(NetBuilder builder, const Data &data ) {
+Net * Creator::learn(NetBuilder &builder, const Data &data ) {
 
     builder.learn(data);
     return builder.get();
 }
-

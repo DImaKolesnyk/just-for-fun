@@ -7,11 +7,13 @@
 
 #include "Net.hpp"
 #include "NetBuilder.hpp"
+#include "RBFNet.h"
+#include "RBFNetBuilder.h"
 
 class Creator {
 public:
     Creator();
-    Net * learn(NetBuilder builder, const Data &data );
+    Net * learn(NetBuilder &builder, const Data &data );
 };
 
 #endif //RADIAL_BASIS_FUNCTION_NETWORK_CREATOR_HPP

@@ -18,5 +18,7 @@ double norm(const Point &a);
 double clacSigma(const Point &mu, const Data &classSet);
 double clacPhi(const Point &mu, const Point &x, double sigma);
 double weightSum(const std::vector<double> &weight, const std::vector<double> &input);
+double costFunc(const Data &d, const std::vector<double> &w);
+double simpleAverage(const Data &d, const std::vector<double> &w, int k);
 
 #endif //RADIAL_BASIS_FUNCTION_NETWORK_MLTMATH_H

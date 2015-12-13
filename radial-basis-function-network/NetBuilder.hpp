@@ -9,8 +9,8 @@
 
 class NetBuilder {
 public:
-    virtual void learn(const Data &d) {};
-    virtual Net * get() {};
+    virtual void learn(const Data &d) = 0;
+    virtual Net* get() const = 0;
     virtual ~NetBuilder() {};
 };
 

@@ -9,15 +9,15 @@
 #include "mltMath.h"
 #include "Net.hpp"
 
-class Neuron : public Net{
+class Neuron : public Net {
 private:
     unsigned int input;
     std::vector < double > weight;
 public:
     Neuron() {}
     Neuron(unsigned int inputSize);
-//    void learn(std::vector<double> phi, int realClass);
-    int getWeightSumm(const Point &p) const;
+    void setWeight(const std::vector < double > &w);
+    double classify(const Point &a) const override ;
 };
 
 

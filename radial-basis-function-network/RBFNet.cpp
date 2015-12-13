@@ -10,28 +10,32 @@ RBFNet::RBFNet(unsigned int h, unsigned int o){
 }
 
 
-void RBFNet::setHiddenCoefs(std::vector<std::pair<Point, double>> hidden_coefs) {
-    hiddenLayerCoefs = hidden_coefs;
+void RBFNet::setWeight(std::vector<std::pair<Point, double>> h, std::vector<Net *> n) {
+
+    outputNeurons = n;
+    hiddenLayerCoefs = h;
 }
 
-void RBFNet::setNeuron( Neuron* n) {
-    outputNeurons.push_back(n);
-}
 
-
-int RBFNet::classify(const Point &p){
+double RBFNet::classify(const Point &p) const{
 
     std::vector<double> phi;
-    int weig(0);
-    unsigned int answer;
+    double weig_buff(0);
+    double weig;
+    int answer(-1);
 
+    phi.push_back(1);
     for (int i = 0; i < hiddenLayerCoefs.size(); ++i) {
         phi.push_back( clacPhi(hiddenLayerCoefs[i].first, p, hiddenLayerCoefs[i].second));
     }
 
+    Point phi_p = Point(phi);
     for (int j = 0; j < outputNeurons.size(); ++j) {
+        weig = outputNeurons[j]->classify(phi_p);
+        std::cout << j << ") " << weig << std::endl;
 
-        if( outputNeurons[j]->getWeightSumm(p) > weig ) {
+        if( weig - weig_buff > 0  ) {
+            weig_buff = weig;
             answer = j;
         }
     }

@@ -25,6 +25,7 @@ Data Parser<DataType, dimension>::get() {
         i += 1;
         if( i%(dimension+1) == 0) {
             currPoint = Point(buff);
+            currPoint.setDim(dimension);
             buff.clear();
             currPoint.setClass(a);
             data.push_back( currPoint );

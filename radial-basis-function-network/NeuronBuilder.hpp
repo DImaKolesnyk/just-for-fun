@@ -11,10 +11,11 @@
 class NeuronBuilder : public NetBuilder{
 private:
     unsigned int output;
+    Net* net;
 public:
     NeuronBuilder(unsigned int output);
     void learn(const Data &d);
-    Net * get();
+    Net * get() const ;
 };
 
 

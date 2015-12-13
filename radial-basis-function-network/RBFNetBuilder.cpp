@@ -8,9 +8,10 @@
 
 RBFNetBuilder::RBFNetBuilder(unsigned int h, unsigned int o)
         : hidden(h),
-          output(o)
+          output(o),
+          net(new RBFNet)
 {
-    net = new RBFNet(h,o);
+
 }
 
 
@@ -19,6 +20,7 @@ void RBFNetBuilder::learn(const Data &d) {
     learnHidenLayer(d);
     learnOutputLayer(d);
 
+    net->setWeight(coeffs, neuron_all);
 }
 
 
@@ -31,45 +33,56 @@ void RBFNetBuilder::learnHidenLayer(const Data &d) {
     for (int i = 0; i < hidden; ++i) {
         coeffs.push_back( std::make_pair(centr[i], clacSigma(centr[i], allClassSet[i])));
     }
-    net->setHiddenCoefs(coeffs);
 }
 
 
 void RBFNetBuilder::learnOutputLayer(const Data &d) {
 
-    std::vector<double> allPhi(hidden);
+    std::vector<Net*> neurons;
+    std::vector<double> allPhi(hidden+1);
 
-//    for (int k = 0; k < d.size(); ++k) {
-//        for (int i = 0; i < output; ++i) {
-//            for (int j = 0; j < hidden; ++j) {
-//                allPhi[j] = clacPhi(coeffs[k].first, d[k], coeffs[k].second);
-//            }
-////            (*(net.getOutputNeurons()))[i].learn(allPhi, (int) (i == d[k].getClass()));
-//
-//
-//        }
-//    }
-
-    std::vector<Point> phi(d.size());
-    std::vector<double> newPoint(hidden);
+    std::vector<Point> phi;
+    std::vector<double> newPoint;
+    Data dataPhi;
+    Point buff;
 
     for (int i = 0; i < d.size(); ++i) {
+        newPoint.push_back(1);
         for (int j = 0; j < hidden; ++j) {
-            newPoint[j] = clacPhi(coeffs[j].first, d[i], coeffs[j].second);
+            newPoint.push_back( clacPhi(coeffs[j].first, d[i], coeffs[j].second));
         }
-        phi.push_back(Point(newPoint));
-        phi[i].setClass(d[i].getClass());
+        buff = Point(newPoint);
+        buff.setDim(hidden+1);
+        buff.setClass(d[i].getClass());
+        phi.push_back(buff);
         newPoint.clear();
     }
 
+
+
+
     for (int k = 0; k < output; ++k) {
-        Net* neuron = Creator().learn( NeuronBuilder(1), phi );
-        net->setNeuron(neuron);
+
+        dataPhi = Data(phi);
+
+        for (int i = 0; i < dataPhi.size(); ++i) {
+
+            if ( dataPhi[i].getClass() == k ) {
+                dataPhi[i].setClass(1);
+            } else {
+                dataPhi[i].setClass(0);
+            }
+        }
+        NeuronBuilder builder(1);
+        Net* neuron = new Net;
+        neuron = Creator().learn( builder, dataPhi );
+        neurons.push_back(neuron);
     }
 
+    neuron_all = neurons;
 }
 
 
-Net* RBFNetBuilder::get() {
+Net* RBFNetBuilder::get() const {
     return net;
 }
